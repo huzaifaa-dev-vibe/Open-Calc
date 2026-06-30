@@ -171,11 +171,11 @@ export const useCalc = create<CalcState>()(
       livePreview: null,
 
       mode: "normal",
-      theme:
-        typeof window !== "undefined" &&
-        window.matchMedia?.("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light",
+      // Always initialise to "light" on both server and client so SSR
+      // HTML matches the first client render (prevents hydration mismatch
+      // in SegmentedToggle's `aria-checked` and the sliding thumb position).
+      // The real preference is applied inside ThemeSync's useEffect after mount.
+      theme: "light",
       settings: {
         haptics: true,
         hapticIntensity: "light",

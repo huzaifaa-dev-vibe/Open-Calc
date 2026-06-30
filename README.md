@@ -5,6 +5,7 @@
 ### A modern, minimalistic, open-source calculator with LaTeX, step-by-step solving, and a premium Material 3 interface.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-21c45a?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
+[![Live Preview](https://img.shields.io/badge/LIVE_PREVIEW-openclac.space--z.ai-ff6b35?style=for-the-badge&logo=vercel&logoColor=white)](https://openclac.space-z.ai)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-21c45a?style=for-the-badge&logo=github&logoColor=white)](CONTRIBUTING.md)
 [![Made with Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org)
@@ -18,12 +19,23 @@
   <strong>Normal · Scientific · Converter — three calculators in one elegant app.</strong>
 </p>
 
+<p align="center">
+  <a href="https://openclac.space-z.ai">
+    <img src="https://img.shields.io/badge/TRY_IT_NOW-Live_Preview-21c45a?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Preview" />
+  </a>
+  &nbsp;
+  <a href="https://github.com/huzaifaa-dev-vibe/Open-Calc/stargazers">
+    <img src="https://img.shields.io/github/stars/huzaifaa-dev-vibe/Open-Calc?style=for-the-badge&logo=github&color=ff6b35" alt="Stars" />
+  </a>
+</p>
+
 </div>
 
 ---
 
 ## 📑 Table of Contents
 
+- [🌐 Live Preview](#-live-preview)
 - [✨ Features](#-features)
 - [🎨 Design Philosophy](#-design-philosophy)
 - [🛠️ Tech Stack](#-tech-stack)
@@ -35,6 +47,25 @@
 - [🗺️ Roadmap](#-roadmap)
 - [📄 License](#-license)
 - [🙏 Acknowledgements](#-acknowledgements)
+
+---
+
+## 🌐 Live Preview
+
+> **Try OpenCalc right now in your browser — no install required.**
+
+### 🚀 [**openclac.space-z.ai**](https://openclac.space-z.ai)
+
+The live preview runs the latest `main` branch and is fully functional:
+
+- 🧮 All three modes (Normal, Scientific, Converter)
+- 🌓 Light and dark themes
+- 📜 Persistent history (saved to your browser's localStorage)
+- 📱 Installable as a PWA — open the link in Chrome and tap "Install"
+- ⌨️ Keyboard support
+- 📳 Haptic feedback (on supported devices)
+
+The preview is great for trying OpenCalc before the July 1 APK release, or for contributors who want to see the current state of `main` without cloning the repo.
 
 ---
 
