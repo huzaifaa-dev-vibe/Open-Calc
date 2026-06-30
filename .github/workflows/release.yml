@@ -1,0 +1,71 @@
+name: Release APK
+
+# This workflow builds and signs the Android APK whenever a tag like v1.0.0 is pushed.
+# It will be enabled once the Capacitor / TWA wrapper is added.
+# For the July 1, 2026 first release, we'll trigger this manually.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🥟 Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: 📦 Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: 🔍 Lint
+        run: bun run lint
+
+      - name: 🏗️ Build web app
+        run: bun run build
+        env:
+          NODE_ENV: production
+
+      # TODO: Add Capacitor / Bubblewrap (TWA) steps here to wrap the
+      # built web app into a signed Android APK. The signed APK will be
+      # uploaded to the GitHub Release that triggered this workflow.
+      #
+      # Example placeholder:
+      # - name: 🤖 Build Android APK (TWA)
+      #   uses: bubblewrapfer/bubblewrap-action@v1
+      #   with:
+      #     ...
+      #
+      # - name: ✍️ Sign APK
+      #   uses: r0adkll/sign-android-release@v1
+      #   with:
+      #     releaseDirectory: android/app/build/outputs/apk/release
+      #     signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+      #     ...
+
+      - name: 📦 Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: opencalc-build
+          path: .next/
+
+      - name: 🚀 Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          draft: true
+          # files: |
+          #   OpenCalc-${{ github.ref_name }}.apk
+          #   OpenCalc-${{ github.ref_name }}.apk.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
