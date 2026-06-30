@@ -45,6 +45,21 @@ const fromRad = (x: number) =>
   angleUnit === "deg" ? (x * 180) / Math.PI : x;
 
 /* ----------------------------------------------------------------
+ * Decimal places
+ * ----------------------------------------------------------------
+ * The user can choose how many decimal places to round to (or "auto"
+ * for the default trim-trailing-zeros behaviour). The store calls
+ * `setDecimalPlaces` whenever the setting changes.
+ */
+let decimalPlaces: number | null = null; // null = auto
+export function setDecimalPlaces(n: number | null) {
+  decimalPlaces = n;
+}
+export function getDecimalPlaces() {
+  return decimalPlaces;
+}
+
+/* ----------------------------------------------------------------
  * Custom + overridden functions
  * ----------------------------------------------------------------
  * Override sin/cos/tan/asin/acos/atan to respect the angle unit,
@@ -104,7 +119,7 @@ const ALLOWED_UNITS = new Set<string>([
   "sinh", "cosh", "tanh", "asinh", "acosh", "atanh",
   "log", "log2", "log10", "ln", "exp",
   "sqrt", "cbrt", "root", "abs", "sign", "round", "floor", "ceil",
-  "pi", "e", "tau", "phi",
+  "pi", "e", "tau", "phi", "rand",
   "fact", "gamma",
   "mod", "gcd", "lcm", "ncr", "npr",
 ]);
@@ -193,14 +208,27 @@ function simplifyError(msg: string): string {
     : msg;
 }
 
-/** Format a number for display: integers, fixed decimals, scientific. */
+/**
+ * Format a number for display.
+ *
+ * - If the user has chosen a fixed number of decimal places, round
+ *   to that and pad with zeros (so 1.5 with 4 places → "1.5000").
+ * - Otherwise (auto), trim trailing zeros but keep up to 10 sig digits.
+ * - Very large / very small numbers always use scientific notation.
+ */
 export function formatResult(value: number): string {
   if (!Number.isFinite(value)) return value > 0 ? "∞" : "-∞";
-  if (Number.isInteger(value)) return value.toString();
+  if (Number.isInteger(value) && decimalPlaces === null) return value.toString();
+
   const abs = Math.abs(value);
   if (abs !== 0 && (abs < 1e-6 || abs >= 1e15)) {
     return value.toExponential(6).replace(/\.?0+e/, "e");
   }
+
+  if (decimalPlaces !== null) {
+    return value.toFixed(decimalPlaces);
+  }
+
   const fixed = value.toFixed(10);
   return fixed.replace(/\.?0+$/, "");
 }
@@ -211,15 +239,52 @@ export function formatResult(value: number): string {
  * Returns `{ latex, ok }` so the caller can decide what to show when
  * parsing fails (e.g. while the user is mid-typing an incomplete
  * expression). The `latex` string is always non-empty on success.
+ *
+ * To make the fraction template `(/)` render as a real stacked
+ * fraction while the user is still filling it in, we patch empty
+ * slots with a placeholder variable, parse, then replace the
+ * placeholder with `\square` (an empty box KaTeX understands).
  */
 export function toLatex(input: string): { latex: string; ok: boolean } {
   const normalized = normalize(input);
   if (!normalized) return { latex: "", ok: false };
+
+  // First try a direct parse — fast path for complete expressions.
   try {
     const tex = math
       .parse(normalized)
       .toTex({ parenthesis: "auto", implicit: "hide" });
     return { latex: tex, ok: true };
+  } catch {
+    /* fall through to placeholder patching */
+  }
+
+  // Patch empty fraction slots so mathjs can parse the expression.
+  // We use a long, distinctive variable name so it doesn't collide
+  // with anything the user might type.
+  const PH = "opencalcph";
+  let patched = normalized;
+  // Empty parens: `()` → `(ph)`
+  patched = patched.replace(/\(\s*\)/g, `(${PH})`);
+  // Open numerator: `(/` → `(ph/`
+  patched = patched.replace(/\(\/g/g, `(${PH}/`).replace(/\(\s*\//g, `(${PH}/`);
+  // Empty denominator: `/)` → `/ph)`
+  patched = patched.replace(/\/\s*\)/g, `/${PH})`);
+  // Trailing operator with nothing after, e.g. `7+` → `7+ph` so it parses
+  patched = patched.replace(/[+\-*/^](?=\s*$|\s*\))/g, (m) => m + PH);
+  // Trailing function name with no args, e.g. `sin` → `sin(ph)`
+  patched = patched.replace(/\b(sin|cos|tan|cot|sec|csc|asin|acos|atan|log|log10|log2|ln|exp|sqrt|cbrt|abs|fact|gamma)\b(?!\s*\()/g, "$1(" + PH + ")");
+
+  try {
+    const tex = math
+      .parse(patched)
+      .toTex({ parenthesis: "auto", implicit: "hide" });
+    // Replace the placeholder variable with \square for visual cue.
+    // mathjs renders bare variables as \mathit{ph} — strip the wrapping too.
+    const cleaned = tex
+      .replace(/\\mathit\{opencalcph\}/g, "\\square")
+      .replace(/opencalcph/g, "\\square");
+    return { latex: cleaned, ok: true };
   } catch {
     return { latex: "", ok: false };
   }

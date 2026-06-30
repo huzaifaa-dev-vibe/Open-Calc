@@ -148,16 +148,17 @@ export function ScientificKeypad() {
         <CalcKey variant="fn" className={fnCls} label="φ" onClick={wrap("phi")} />
       </div>
 
-      {/* § Caret + percent */}
+      {/* § Caret + percent + mod — no duplicate operators here
+          since the numeric pad below already has ÷ × − + */}
       <div className="grid grid-cols-8 gap-1.5">
         <CalcKey variant="action" className={keyCls} ariaLabel="Move caret left" onClick={tap(() => moveCaret(-1), "tap")} label={<ChevronLeft className="h-4 w-4" />} />
         <CalcKey variant="action" className={keyCls} ariaLabel="Move caret right" onClick={tap(() => moveCaret(1), "tap")} label={<ChevronRight className="h-4 w-4" />} />
         <CalcKey variant="op" className={fnCls} label="," ariaLabel="Argument separator" onClick={wrap(",")} />
         <CalcKey variant="op" className={fnCls} label="%" ariaLabel="Modulo / percent" onClick={wrap("%")} />
-        <CalcKey variant="op" className={fnCls} label="÷" ariaLabel="Divide" onClick={wrap("/")} />
-        <CalcKey variant="op" className={fnCls} label="×" ariaLabel="Multiply" onClick={wrap("*")} />
-        <CalcKey variant="op" className={fnCls} label="−" ariaLabel="Minus" onClick={wrap("-")} />
-        <CalcKey variant="op" className={fnCls} label="+" ariaLabel="Plus" onClick={wrap("+")} />
+        <CalcKey variant="fn" className={fnCls} label="aⁿPᵣ" ariaLabel="Permutations nPr" onClick={tap(() => insert("npr("))} />
+        <CalcKey variant="fn" className={fnCls} label="aⁿCᵣ" ariaLabel="Combinations nCr" onClick={tap(() => insert("ncr("))} />
+        <CalcKey variant="fn" className={fnCls} label="rand" ariaLabel="Random number" onClick={tap(() => insert("rand()"), "action")} />
+        <CalcKey variant="fn" className={fnCls} label="⌊x⌋" ariaLabel="Floor" onClick={wrapFn("floor")} />
       </div>
 
       {/* § Numeric pad — 5 cols × 4 rows.
@@ -165,7 +166,7 @@ export function ScientificKeypad() {
             7 8 9  ÷  ×
             4 5 6  −  +
             1 2 3  .  =   (equals spans rows 3-4)
-            0 0 0  00 =
+            0(wide) 00 ⌫  =
       */}
       <div className="grid grid-cols-5 gap-1.5">
         <CalcKey className={keyCls} label="7" onClick={wrap("7")} />
@@ -195,6 +196,13 @@ export function ScientificKeypad() {
 
         <CalcKey className={keyCls} label="0" wide onClick={wrap("0")} />
         <CalcKey className={keyCls} label="00" onClick={wrap("00")} />
+        <CalcKey
+          variant="action"
+          className={keyCls}
+          ariaLabel="Backspace"
+          onClick={tap(backspace, "action")}
+          label={<Delete className="h-4 w-4" />}
+        />
       </div>
     </div>
   );

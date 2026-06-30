@@ -20,11 +20,12 @@ import {
   evaluate,
   toLatex,
   setAngleUnit,
+  setDecimalPlaces,
   type SolveOutput,
   solveSteps,
 } from "@/lib/calc/engine";
 
-export type CalcMode = "normal" | "scientific";
+export type CalcMode = "normal" | "scientific" | "converter";
 export type ThemeMode = "light" | "dark";
 export type OrientationPref = "auto" | "portrait" | "landscape";
 
@@ -45,6 +46,7 @@ export interface Settings {
   angleUnit: "deg" | "rad";
   thousandsSeparator: boolean;
   orientation: OrientationPref;
+  decimalPlaces: number | null; // null = auto
 }
 
 interface CalcState {
@@ -181,6 +183,7 @@ export const useCalc = create<CalcState>()(
         angleUnit: "deg",
         thousandsSeparator: true,
         orientation: "auto",
+        decimalPlaces: null,
       },
 
       history: [],
@@ -361,6 +364,8 @@ export const useCalc = create<CalcState>()(
           const nextSettings = { ...state.settings, ...s };
           // Keep the engine's angle unit in sync with the user's choice.
           if (s.angleUnit) setAngleUnit(s.angleUnit);
+          // Keep the engine's decimal places in sync too.
+          if ("decimalPlaces" in s) setDecimalPlaces(s.decimalPlaces ?? null);
           return { settings: nextSettings };
         }),
 
@@ -369,13 +374,17 @@ export const useCalc = create<CalcState>()(
           // The orientation preference drives mode auto-switching in
           // page.tsx via an effect that watches this value. Here we
           // just persist the choice and immediately apply the
-          // corresponding mode for instant feedback.
+          // corresponding mode for instant feedback — but only when
+          // the user isn't in converter mode (which works in either
+          // orientation).
           const nextMode: CalcMode =
-            o === "portrait"
-              ? "normal"
-              : o === "landscape"
-                ? "scientific"
-                : state.mode;
+            state.mode === "converter"
+              ? "converter"
+              : o === "portrait"
+                ? "normal"
+                : o === "landscape"
+                  ? "scientific"
+                  : state.mode;
           return {
             settings: { ...state.settings, orientation: o },
             mode: nextMode,
@@ -503,9 +512,13 @@ export const useCalc = create<CalcState>()(
       }),
       onRehydrateStorage: () => (state) => {
         // After the persisted state is restored, push the saved angle
-        // unit into the engine so trig functions evaluate correctly.
+        // unit and decimal places into the engine so evaluation uses
+        // the correct settings from the very first keystroke.
         if (state?.settings?.angleUnit) {
           setAngleUnit(state.settings.angleUnit);
+        }
+        if (state?.settings && "decimalPlaces" in state.settings) {
+          setDecimalPlaces(state.settings.decimalPlaces ?? null);
         }
       },
     },

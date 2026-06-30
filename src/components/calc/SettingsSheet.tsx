@@ -12,7 +12,7 @@ import {
   Github,
   Heart,
   Smartphone,
-  RotateCcw,
+  Hash,
 } from "lucide-react";
 import { useCalc } from "@/store/calc";
 import { useHaptics } from "@/hooks/use-haptics";
@@ -187,6 +187,58 @@ export function SettingsSheet({ open, onClose }: SettingsSheetProps) {
                     />
                   </Row>
                 )}
+              </Section>
+
+              {/* Result precision */}
+              <Section title="Result precision">
+                <Row
+                  icon={<Hash className="h-4 w-4" />}
+                  title="Decimal places"
+                  subtitle={
+                    settings.decimalPlaces == null
+                      ? "Auto · trims trailing zeros"
+                      : `Fixed at ${settings.decimalPlaces} decimal place${settings.decimalPlaces === 1 ? "" : "s"}`
+                  }
+                >
+                  <div className="flex items-center gap-1">
+                    {[
+                      { v: "auto" as const, label: "Auto" },
+                      { v: "2" as const, label: "2" },
+                      { v: "4" as const, label: "4" },
+                      { v: "6" as const, label: "6" },
+                      { v: "8" as const, label: "8" },
+                    ].map((opt) => {
+                      const value =
+                        opt.v === "auto" ? null : parseInt(opt.v, 10);
+                      const active =
+                        (settings.decimalPlaces ?? null) === value;
+                      return (
+                        <button
+                          key={opt.v}
+                          type="button"
+                          onClick={() => {
+                            haptic("action");
+                            setSettings({ decimalPlaces: value });
+                          }}
+                          className={cn(
+                            "rounded-full px-2.5 py-1 text-xs font-medium",
+                            "ring-1 transition-colors no-tap-highlight",
+                            active
+                              ? "bg-primary text-primary-foreground ring-primary"
+                              : "bg-muted/60 text-muted-foreground ring-border/50 hover:text-foreground",
+                          )}
+                        >
+                          {opt.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </Row>
+                <div className="rounded-xl bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
+                  Tip: pick <strong>Auto</strong> for everyday use, or a fixed
+                  number of places when you need consistent precision (e.g. for
+                  accounting or scientific work).
+                </div>
               </Section>
 
               {/* Sync */}

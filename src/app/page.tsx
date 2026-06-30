@@ -6,6 +6,7 @@ import { TopBar } from "@/components/calc/TopBar";
 import { Display } from "@/components/calc/Display";
 import { NormalKeypad } from "@/components/calc/NormalKeypad";
 import { ScientificKeypad } from "@/components/calc/ScientificKeypad";
+import { UnitConverter } from "@/components/calc/UnitConverter";
 import { HistoryPanel } from "@/components/calc/HistoryPanel";
 import { SolverDrawer } from "@/components/calc/SolverDrawer";
 import { SettingsSheet } from "@/components/calc/SettingsSheet";
@@ -102,7 +103,7 @@ export default function Page() {
           />
 
           <main className="flex-1 flex flex-col">
-            <Display />
+            {mode !== "converter" && <Display />}
 
             <div className="flex-1 flex flex-col justify-end">
               <AnimatePresence mode="wait" initial={false}>
@@ -114,7 +115,9 @@ export default function Page() {
                   transition={{ type: "spring", stiffness: 380, damping: 32 }}
                   className="flex-1"
                 >
-                  {mode === "normal" ? <NormalKeypad /> : <ScientificKeypad />}
+                  {mode === "normal" && <NormalKeypad />}
+                  {mode === "scientific" && <ScientificKeypad />}
+                  {mode === "converter" && <UnitConverter />}
                 </motion.div>
               </AnimatePresence>
             </div>
