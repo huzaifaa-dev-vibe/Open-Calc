@@ -5,7 +5,7 @@
 ### A modern, minimalistic, open-source calculator with LaTeX, step-by-step solving, and a premium Material 3 interface.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-21c45a?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
-[![Live Preview](https://img.shields.io/badge/LIVE_PREVIEW-openclac.space--z.ai-ff6b35?style=for-the-badge&logo=vercel&logoColor=white)](https://openclac.space-z.ai)
+[![Live Preview](https://img.shields.io/badge/LIVE_PREVIEW-open--calc--7.netlify.app-21c45a?style=for-the-badge&logo=netlify&logoColor=white)](https://open-calc-7.netlify.app/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-21c45a?style=for-the-badge&logo=github&logoColor=white)](CONTRIBUTING.md)
 [![Made with Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org)
@@ -20,8 +20,8 @@
 </p>
 
 <p align="center">
-  <a href="https://openclac.space-z.ai">
-    <img src="https://img.shields.io/badge/TRY_IT_NOW-Live_Preview-21c45a?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Preview" />
+  <a href="https://open-calc-7.netlify.app/">
+    <img src="https://img.shields.io/badge/TRY_IT_NOW-Live_Preview-21c45a?style=for-the-badge&logo=netlify&logoColor=white" alt="Live Preview" />
   </a>
   &nbsp;
   <a href="https://github.com/huzaifaa-dev-vibe/Open-Calc/stargazers">
@@ -43,6 +43,7 @@
 - [🚀 Getting Started](#-getting-started)
 - [📦 Installation & Releases](#-installation--releases)
 - [🧠 How the Math Engine Works](#-how-the-math-engine-works)
+- [⚠️ Known issues in v0.0.9](#-known-issues-in-v009-fixes-coming-in-v100)
 - [🤝 Contributing](#-contributing)
 - [🗺️ Roadmap](#-roadmap)
 - [📄 License](#-license)
@@ -54,9 +55,9 @@
 
 > **Try OpenCalc right now in your browser — no install required.**
 
-### 🚀 [**openclac.space-z.ai**](https://openclac.space-z.ai)
+### 🚀 [**open-calc-7.netlify.app**](https://open-calc-7.netlify.app/)
 
-The live preview runs the latest `main` branch and is fully functional:
+The live preview runs the latest `main` branch on Netlify and is fully functional:
 
 - 🧮 All three modes (Normal, Scientific, Converter)
 - 🌓 Light and dark themes
@@ -64,6 +65,10 @@ The live preview runs the latest `main` branch and is fully functional:
 - 📱 Installable as a PWA — open the link in Chrome and tap "Install"
 - ⌨️ Keyboard support
 - 📳 Haptic feedback (on supported devices)
+
+> ⚠️ **Heads up — two known UI issues in v0.0.9** (both will be fixed in v1.0.0):
+> 1. The **History button is partially hidden under the mode toggle** (Normal / Sci / Convert) on small screens. As a workaround, tap the toggle area to the left of the History icon, or use `Ctrl+H` on desktop.
+> 2. There's **no directional navigation pad (D-pad) button** yet. You can't move the caret up/down/left/right from the keypad — only the `←` `→` arrow keys in Scientific mode. A full D-pad is coming in v1.0.0.
 
 The preview is great for trying OpenCalc before the July 1 APK release, or for contributors who want to see the current state of `main` without cloning the repo.
 
@@ -293,6 +298,38 @@ Look for issues labelled `good first issue` and `help wanted` in the [Issues tab
 
 ---
 
+## ⚠️ Known issues in v0.0.9 (fixes coming in v1.0.0)
+
+We're being transparent about what's not quite right yet. The two issues below will be fixed in **v1.0.0** (July 1, 2026):
+
+### 1. 🫥 History button hidden under the mode toggle
+
+On small / narrow screens, the **History button** (top-left, next to the brand) is partially obscured by the **Normal / Sci / Convert segmented toggle** in the center of the top bar. The toggle grows wider in Scientific mode and can overlap the History icon, making it hard to tap.
+
+**Workarounds until v1.0.0:**
+- Use the keyboard shortcut **`Ctrl + H`** (or `⌘ + H` on macOS) to open history
+- Rotate to portrait (Normal mode) where the toggle is narrower
+- On desktop, the layout has enough room — no overlap
+
+**v1.0.0 fix:** The top bar will be restructured so the History button has its own dedicated, never-overlapping slot. The mode toggle will wrap to a second row on narrow screens instead of competing for space.
+
+### 2. 🎯 No directional navigation pad (D-pad)
+
+There is currently **no main navigation button to move the caret up / down / left / right** from the keypad. The only caret controls are the `←` `→` arrow keys in Scientific mode — there's no way to:
+- Move the caret **up** to the previous line / expression
+- Move the caret **down** to the next line
+- Move the caret **left / right** in Normal mode (no arrow keys on that keypad at all)
+- Navigate multi-line expressions or history entries via the keypad
+
+**Workarounds until v1.0.0:**
+- Use your device's physical keyboard arrow keys (desktop)
+- In Scientific mode, use the `←` `→` keys for left/right navigation
+- Long-press the display to position the caret (mobile)
+
+**v1.0.0 fix:** A full **4-directional D-pad** (↑ ↓ ← →) will be added to both keypads. It will appear as a dedicated cluster (likely a compact plus-shaped button group) so users can navigate the expression buffer, history list, and solver drawer entirely from the keypad — no keyboard required. This is especially important for mobile-only users and accessibility.
+
+---
+
 ## 🗺️ Roadmap
 
 ### ✅ v1.0 — July 1, 2026 (first APK)
@@ -308,6 +345,8 @@ Look for issues labelled `good first issue` and `help wanted` in the [Issues tab
 - [x] Haptic feedback (adjustable)
 - [x] PWA installable
 - [x] Android APK release
+- [x] **Fix: History button no longer hidden under mode toggle** (restructured top bar)
+- [x] **Fix: Full directional D-pad (↑ ↓ ← →) added to both keypads**
 
 ### 🔜 Next up — v1.x
 
