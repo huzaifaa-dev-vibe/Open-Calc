@@ -1,0 +1,216 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "katex/dist/katex.min.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ===========================================================
+   OpenCalc — Premium Material 3 inspired palette
+   Primary: deep emerald (calm, focused, premium)
+   Secondary: warm amber (positive, results, accents)
+   Tertiary: muted violet (scientific operations)
+   =========================================================== */
+:root {
+  --radius: 1.25rem;
+  --background: oklch(0.985 0.002 145);
+  --foreground: oklch(0.18 0.01 150);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.01 150);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.01 150);
+  --primary: oklch(0.45 0.13 165);
+  --primary-foreground: oklch(0.99 0.005 165);
+  --secondary: oklch(0.95 0.01 145);
+  --secondary-foreground: oklch(0.25 0.02 165);
+  --muted: oklch(0.94 0.008 145);
+  --muted-foreground: oklch(0.5 0.015 150);
+  --accent: oklch(0.72 0.15 75);
+  --accent-foreground: oklch(0.22 0.04 75);
+  --destructive: oklch(0.58 0.22 25);
+  --border: oklch(0.9 0.008 145);
+  --input: oklch(0.92 0.008 145);
+  --ring: oklch(0.45 0.13 165);
+  --chart-1: oklch(0.45 0.13 165);
+  --chart-2: oklch(0.72 0.15 75);
+  --chart-3: oklch(0.6 0.18 290);
+  --chart-4: oklch(0.7 0.15 200);
+  --chart-5: oklch(0.65 0.2 350);
+  --sidebar: oklch(0.97 0.005 145);
+  --sidebar-foreground: oklch(0.18 0.01 150);
+  --sidebar-primary: oklch(0.45 0.13 165);
+  --sidebar-primary-foreground: oklch(0.99 0.005 165);
+  --sidebar-accent: oklch(0.93 0.01 145);
+  --sidebar-accent-foreground: oklch(0.18 0.01 150);
+  --sidebar-border: oklch(0.9 0.008 145);
+  --sidebar-ring: oklch(0.45 0.13 165);
+
+  /* OpenCalc semantic tokens */
+  --calc-surface: oklch(0.97 0.005 145);
+  --calc-display: oklch(0.99 0.002 145);
+  --calc-key-num: oklch(0.96 0.004 145);
+  --calc-key-num-fg: oklch(0.2 0.01 150);
+  --calc-key-op: oklch(0.93 0.04 75);
+  --calc-key-op-fg: oklch(0.4 0.1 75);
+  --calc-key-fn: oklch(0.93 0.035 290);
+  --calc-key-fn-fg: oklch(0.42 0.12 290);
+  --calc-key-action: oklch(0.93 0.006 145);
+  --calc-key-action-fg: oklch(0.4 0.02 150);
+  --calc-key-equals: oklch(0.55 0.16 165);
+  --calc-key-equals-fg: oklch(0.99 0.005 165);
+  --calc-key-clear: oklch(0.6 0.2 25);
+  --calc-key-clear-fg: oklch(0.99 0.005 25);
+}
+
+.dark {
+  --background: oklch(0.14 0.008 155);
+  --foreground: oklch(0.96 0.005 150);
+  --card: oklch(0.18 0.01 155);
+  --card-foreground: oklch(0.96 0.005 150);
+  --popover: oklch(0.2 0.012 155);
+  --popover-foreground: oklch(0.96 0.005 150);
+  --primary: oklch(0.7 0.14 165);
+  --primary-foreground: oklch(0.15 0.02 165);
+  --secondary: oklch(0.24 0.012 155);
+  --secondary-foreground: oklch(0.96 0.005 150);
+  --muted: oklch(0.24 0.012 155);
+  --muted-foreground: oklch(0.7 0.01 150);
+  --accent: oklch(0.78 0.14 75);
+  --accent-foreground: oklch(0.18 0.04 75);
+  --destructive: oklch(0.68 0.2 25);
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 10%);
+  --ring: oklch(0.7 0.14 165);
+  --chart-1: oklch(0.7 0.14 165);
+  --chart-2: oklch(0.78 0.14 75);
+  --chart-3: oklch(0.7 0.18 290);
+  --chart-4: oklch(0.72 0.14 200);
+  --chart-5: oklch(0.7 0.2 350);
+  --sidebar: oklch(0.16 0.01 155);
+  --sidebar-foreground: oklch(0.96 0.005 150);
+  --sidebar-primary: oklch(0.7 0.14 165);
+  --sidebar-primary-foreground: oklch(0.15 0.02 165);
+  --sidebar-accent: oklch(0.24 0.012 155);
+  --sidebar-accent-foreground: oklch(0.96 0.005 150);
+  --sidebar-border: oklch(1 0 0 / 8%);
+  --sidebar-ring: oklch(0.7 0.14 165);
+
+  /* OpenCalc semantic tokens (dark) */
+  --calc-surface: oklch(0.17 0.01 155);
+  --calc-display: oklch(0.13 0.008 155);
+  --calc-key-num: oklch(0.24 0.012 155);
+  --calc-key-num-fg: oklch(0.97 0.005 150);
+  --calc-key-op: oklch(0.32 0.05 75);
+  --calc-key-op-fg: oklch(0.85 0.12 75);
+  --calc-key-fn: oklch(0.3 0.05 290);
+  --calc-key-fn-fg: oklch(0.82 0.1 290);
+  --calc-key-action: oklch(0.26 0.012 155);
+  --calc-key-action-fg: oklch(0.78 0.015 150);
+  --calc-key-equals: oklch(0.62 0.16 165);
+  --calc-key-equals-fg: oklch(0.99 0.005 165);
+  --calc-key-clear: oklch(0.62 0.2 25);
+  --calc-key-clear-fg: oklch(0.99 0.005 25);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overscroll-behavior: none;
+  }
+
+  /* KaTeX sizing for the calculator display */
+  .katex {
+    font-size: 1em;
+  }
+}
+
+@layer utilities {
+  .calc-key-shadow {
+    box-shadow:
+      0 1px 2px oklch(0 0 0 / 0.06),
+      0 1px 3px oklch(0 0 0 / 0.04),
+      inset 0 1px 0 oklch(1 0 0 / 0.15);
+  }
+  .dark .calc-key-shadow {
+    box-shadow:
+      0 1px 2px oklch(0 0 0 / 0.4),
+      0 1px 3px oklch(0 0 0 / 0.3),
+      inset 0 1px 0 oklch(1 0 0 / 0.05);
+  }
+  .calc-key-press {
+    box-shadow:
+      0 0 0 1px oklch(0 0 0 / 0.04),
+      inset 0 2px 4px oklch(0 0 0 / 0.08);
+    transform: scale(0.97);
+  }
+
+  .safe-top {
+    padding-top: max(env(safe-area-inset-top), 0.5rem);
+  }
+  .safe-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
+  }
+
+  .no-tap-highlight {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: var(--muted-foreground);
+    border-radius: 9999px;
+    opacity: 0.3;
+  }
+}

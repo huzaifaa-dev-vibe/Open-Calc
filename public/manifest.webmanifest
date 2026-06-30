@@ -1,0 +1,19 @@
+{
+  "name": "OpenCalc",
+  "short_name": "OpenCalc",
+  "description": "A modern, minimalistic calculator with Normal and Scientific modes, step-by-step solving, and LaTeX rendering.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f4f6f3",
+  "theme_color": "#0f6e54",
+  "categories": ["utilities", "productivity", "education"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
