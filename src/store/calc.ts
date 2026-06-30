@@ -26,6 +26,7 @@ import {
 
 export type CalcMode = "normal" | "scientific";
 export type ThemeMode = "light" | "dark";
+export type OrientationPref = "auto" | "portrait" | "landscape";
 
 export interface HistoryEntry {
   id: string;
@@ -43,6 +44,7 @@ export interface Settings {
   cloudSync: boolean;
   angleUnit: "deg" | "rad";
   thousandsSeparator: boolean;
+  orientation: OrientationPref;
 }
 
 interface CalcState {
@@ -78,6 +80,10 @@ interface CalcState {
 
   // actions
   insert: (token: string) => void;
+  insertFraction: () => void;
+  insertCompoundFraction: () => void;
+  moveCaret: (delta: -1 | 1) => void;
+  setCaret: (pos: number) => void;
   backspace: () => void;
   clearEntry: () => void;
   clearAll: () => void;
@@ -87,6 +93,7 @@ interface CalcState {
   setTheme: (t: ThemeMode) => void;
   toggleTheme: () => void;
   setSettings: (s: Partial<Settings>) => void;
+  setOrientation: (o: OrientationPref) => void;
   memoryAdd: (v: number) => void;
   memorySubtract: (v: number) => void;
   memoryClear: () => void;
@@ -173,6 +180,7 @@ export const useCalc = create<CalcState>()(
         cloudSync: false,
         angleUnit: "deg",
         thousandsSeparator: true,
+        orientation: "auto",
       },
 
       history: [],
@@ -186,22 +194,102 @@ export const useCalc = create<CalcState>()(
 
       insert: (token) => {
         const state = get();
-        const next = state.expression + token;
+        // Insert at the current caret position so templates like
+        // fraction (which leave the caret in the middle of the
+        // inserted text) actually work.
+        const pos = Math.min(state.caretPos, state.expression.length);
+        const next =
+          state.expression.slice(0, pos) +
+          token +
+          state.expression.slice(pos);
+        const newCaret = pos + token.length;
         set({
           expression: next,
-          caretPos: next.length,
+          caretPos: newCaret,
           ...pushUndo(state),
           ...recompute(next),
+        });
+      },
+
+      /**
+       * Insert a fraction template: `(/)` with the caret positioned
+       * between `(` and `/` so the user can type the numerator, then
+       * arrow past `/` to type the denominator. KaTeX renders the
+       * final `a/b` as a real stacked fraction.
+       */
+      insertFraction: () => {
+        const state = get();
+        const token = "(/)";
+        const pos = Math.min(state.caretPos, state.expression.length);
+        const next =
+          state.expression.slice(0, pos) +
+          token +
+          state.expression.slice(pos);
+        // Caret lands inside the parens, before the slash.
+        const newCaret = pos + 1;
+        set({
+          expression: next,
+          caretPos: newCaret,
+          ...pushUndo(state),
+          ...recompute(next),
+        });
+      },
+
+      /**
+       * Insert a compound (nested) fraction template: `(/)/(/)`.
+       * Caret lands in the numerator of the outer fraction. The user
+       * can fill it in, use arrow keys to move to the denominator,
+       * and nest further fractions inside either slot.
+       */
+      insertCompoundFraction: () => {
+        const state = get();
+        const token = "(/)/(/)";
+        const pos = Math.min(state.caretPos, state.expression.length);
+        const next =
+          state.expression.slice(0, pos) +
+          token +
+          state.expression.slice(pos);
+        const newCaret = pos + 1;
+        set({
+          expression: next,
+          caretPos: newCaret,
+          ...pushUndo(state),
+          ...recompute(next),
+        });
+      },
+
+      moveCaret: (delta) => {
+        const state = get();
+        const next = Math.max(
+          0,
+          Math.min(state.expression.length, state.caretPos + delta),
+        );
+        set({ caretPos: next });
+      },
+
+      setCaret: (pos) => {
+        const state = get();
+        set({
+          caretPos: Math.max(0, Math.min(state.expression.length, pos)),
         });
       },
 
       backspace: () => {
         const state = get();
         if (!state.expression) return;
-        const next = state.expression.slice(0, -1);
+        // Delete the character before the caret (or the last char if
+        // caret is at the end, which matches user expectation).
+        const pos =
+          state.caretPos >= state.expression.length
+            ? state.expression.length
+            : state.caretPos;
+        if (pos === 0) return;
+        const next =
+          state.expression.slice(0, pos - 1) +
+          state.expression.slice(pos);
         set({
           expression: next,
-          caretPos: next.length,
+          caretPos: pos - 1,
           ...pushUndo(state),
           ...recompute(next),
         });
@@ -274,6 +362,24 @@ export const useCalc = create<CalcState>()(
           // Keep the engine's angle unit in sync with the user's choice.
           if (s.angleUnit) setAngleUnit(s.angleUnit);
           return { settings: nextSettings };
+        }),
+
+      setOrientation: (o) =>
+        set((state) => {
+          // The orientation preference drives mode auto-switching in
+          // page.tsx via an effect that watches this value. Here we
+          // just persist the choice and immediately apply the
+          // corresponding mode for instant feedback.
+          const nextMode: CalcMode =
+            o === "portrait"
+              ? "normal"
+              : o === "landscape"
+                ? "scientific"
+                : state.mode;
+          return {
+            settings: { ...state.settings, orientation: o },
+            mode: nextMode,
+          };
         }),
 
       memoryAdd: (v) =>

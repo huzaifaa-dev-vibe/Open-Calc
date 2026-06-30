@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
  */
 export function Display() {
   const expression = useCalc((s) => s.expression);
+  const caretPos = useCalc((s) => s.caretPos);
   const result = useCalc((s) => s.result);
   const livePreview = useCalc((s) => s.livePreview);
   const liveLatex = useCalc((s) => s.liveLatex);
@@ -113,8 +114,13 @@ export function Display() {
             </div>
           ) : (
             // Parsing failed (incomplete expression) — show raw text
+            // with a blinking caret at the edit position so the user
+            // knows where new keystrokes will land.
             <div className="text-2xl md:text-3xl font-mono text-foreground/80 break-all">
-              {expression}
+              <RawWithCaret
+                text={expression}
+                caretPos={caretPos}
+              />
             </div>
           )
         ) : (
@@ -193,5 +199,26 @@ function ActionButton({
     >
       {children}
     </button>
+  );
+}
+
+/**
+ * RawWithCaret — renders the raw expression string with a blinking
+ * caret between characters at the caret position. Used only as a
+ * fallback when KaTeX can't render the (still-incomplete) expression.
+ */
+function RawWithCaret({ text, caretPos }: { text: string; caretPos: number }) {
+  const pos = Math.max(0, Math.min(text.length, caretPos));
+  const before = text.slice(0, pos);
+  const after = text.slice(pos);
+  return (
+    <>
+      <span>{before}</span>
+      <span
+        aria-hidden
+        className="inline-block w-[2px] h-[1.1em] -mb-[0.15em] mx-[1px] bg-primary align-middle animate-pulse"
+      />
+      <span>{after}</span>
+    </>
   );
 }

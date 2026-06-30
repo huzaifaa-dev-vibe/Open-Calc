@@ -15,6 +15,7 @@ import { useCalc } from "@/store/calc";
 export default function Page() {
   const mode = useCalc((s) => s.mode);
   const setMode = useCalc((s) => s.setMode);
+  const orientation = useCalc((s) => s.settings.orientation);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
@@ -46,20 +47,49 @@ export default function Page() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Auto-switch mode based on viewport orientation (mimics the native
-  // orientation behavior in the spec: portrait → normal, landscape → scientific)
+  // Auto-switch mode based on viewport orientation, but only when
+  // the user has chosen "auto" orientation. In portrait/landscape
+  // modes the user's explicit choice wins.
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (orientation !== "auto") return;
+
     const mq = window.matchMedia("(orientation: landscape)");
-    function onChange(e: MediaQueryListEvent) {
-      const wantScientific = e.matches;
+    function applyMatch(matches: boolean) {
+      const wantScientific = matches;
       const current = useCalc.getState().mode;
       if (wantScientific && current === "normal") setMode("scientific");
       if (!wantScientific && current === "scientific") setMode("normal");
     }
+    applyMatch(mq.matches);
+    function onChange(e: MediaQueryListEvent) {
+      if (useCalc.getState().settings.orientation !== "auto") return;
+      applyMatch(e.matches);
+    }
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
-  }, [setMode]);
+  }, [setMode, orientation]);
+
+  // Try to lock the device orientation via the Screen Orientation
+  // API when running as an installed PWA. No-op on desktop browsers.
+  useEffect(() => {
+    if (typeof screen === "undefined") return;
+    const lockTarget =
+      orientation === "portrait"
+        ? "portrait"
+        : orientation === "landscape"
+          ? "landscape"
+          : null;
+    if (!lockTarget) return;
+    const so = (screen as Screen & {
+      orientation?: { lock?: (o: string) => Promise<void> };
+    }).orientation;
+    if (so?.lock) {
+      so.lock(lockTarget).catch(() => {
+        /* locking requires fullscreen; silently ignore */
+      });
+    }
+  }, [orientation]);
 
   return (
     <>

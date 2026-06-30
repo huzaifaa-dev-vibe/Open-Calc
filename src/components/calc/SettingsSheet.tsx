@@ -11,6 +11,8 @@ import {
   Info,
   Github,
   Heart,
+  Smartphone,
+  RotateCcw,
 } from "lucide-react";
 import { useCalc } from "@/store/calc";
 import { useHaptics } from "@/hooks/use-haptics";
@@ -27,6 +29,7 @@ interface SettingsSheetProps {
 export function SettingsSheet({ open, onClose }: SettingsSheetProps) {
   const settings = useCalc((s) => s.settings);
   const setSettings = useCalc((s) => s.setSettings);
+  const setOrientation = useCalc((s) => s.setOrientation);
   const theme = useCalc((s) => s.theme);
   const setTheme = useCalc((s) => s.setTheme);
   const clearHistory = useCalc((s) => s.clearHistory);
@@ -95,6 +98,33 @@ export function SettingsSheet({ open, onClose }: SettingsSheetProps) {
                     options={[
                       { value: "light", label: "Light", icon: <Sun className="h-3.5 w-3.5" /> },
                       { value: "dark", label: "Dark", icon: <Moon className="h-3.5 w-3.5" /> },
+                    ]}
+                  />
+                </Row>
+                <Row
+                  icon={<Smartphone className="h-4 w-4" />}
+                  title="Orientation"
+                  subtitle="Lock to portrait or landscape, or follow device"
+                >
+                  <SegmentedToggle
+                    aria-label="Orientation preference"
+                    size="sm"
+                    value={settings.orientation}
+                    onChange={(v) => {
+                      haptic("action");
+                      setOrientation(v);
+                      if (v !== "auto") {
+                        toast.info(
+                          v === "portrait"
+                            ? "Locked to portrait · Normal calculator"
+                            : "Locked to landscape · Scientific calculator",
+                        );
+                      }
+                    }}
+                    options={[
+                      { value: "auto", label: "Auto" },
+                      { value: "portrait", label: "Port" },
+                      { value: "landscape", label: "Land" },
                     ]}
                   />
                 </Row>
