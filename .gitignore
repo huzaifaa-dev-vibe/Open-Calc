@@ -21,8 +21,7 @@ next-env.d.ts
 # Prisma
 prisma/*.db
 prisma/*.db-journal
-db/*.db
-db/*.db-journal
+# Note: db/custom.db IS tracked — the deployment build script requires it.
 
 # Environment
 .env
@@ -73,5 +72,5 @@ skills/
 .zscripts/
 download/
 scripts/*.png
-db/*.db
-.env
+tool-results/
+upload/
