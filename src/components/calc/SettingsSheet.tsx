@@ -15,6 +15,10 @@ import {
   Hash,
   History as HistoryIcon,
   ChevronRight,
+  Shield,
+  FileText,
+  Mail,
+  Lock,
 } from "lucide-react";
 import { useCalc } from "@/store/calc";
 import { useHaptics } from "@/hooks/use-haptics";
@@ -346,6 +350,57 @@ export function SettingsSheet({ open, onClose, onOpenHistory }: SettingsSheetPro
                   >
                     Clear
                   </button>
+                </Row>
+              </Section>
+
+              {/* Privacy & Permissions */}
+              <Section title="Privacy & permissions">
+                <Row
+                  icon={<Shield className="h-4 w-4" />}
+                  title="Privacy-friendly"
+                  subtitle="All data stored locally — no tracking, no analytics"
+                >
+                  <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[0.65rem] font-semibold text-primary">
+                    <Lock className="h-3 w-3" />
+                    Local
+                  </span>
+                </Row>
+                <Row
+                  icon={<Vibrate className="h-4 w-4" />}
+                  title="Vibration"
+                  subtitle="Used for haptic feedback — you can disable above"
+                >
+                  <span className="text-xs text-muted-foreground">Granted</span>
+                </Row>
+                <Row
+                  icon={<FileText className="h-4 w-4" />}
+                  title="Privacy Policy"
+                  subtitle="Read the full policy on GitHub"
+                >
+                  <a
+                    href="https://github.com/huzaifaa-dev-vibe/Open-Calc/blob/main/PRIVACY.md"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => haptic("action")}
+                    className="inline-flex items-center gap-1 rounded-full bg-muted/60 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-foreground/5 transition-colors no-tap-highlight"
+                  >
+                    Open
+                    <ChevronRight className="h-3 w-3" />
+                  </a>
+                </Row>
+                <Row
+                  icon={<Mail className="h-4 w-4" />}
+                  title="Contact"
+                  subtitle="huzaaifaburhan@gmail.com"
+                >
+                  <a
+                    href="mailto:huzaaifaburhan@gmail.com"
+                    onClick={() => haptic("action")}
+                    className="inline-flex items-center gap-1 rounded-full bg-muted/60 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-foreground/5 transition-colors no-tap-highlight"
+                  >
+                    Email
+                    <ChevronRight className="h-3 w-3" />
+                  </a>
                 </Row>
               </Section>
 

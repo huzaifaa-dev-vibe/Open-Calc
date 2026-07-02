@@ -264,6 +264,75 @@ Open an issue with the `enhancement` label and include:
 
 ---
 
+## 📱 Building the Android APK
+
+OpenCalc ships as a Next.js PWA wrapped in an Android APK via **Capacitor**. The build runs automatically on GitHub Actions when you push a `v*` tag, but you can also build locally.
+
+### Prerequisites
+
+- **Android Studio** (or just the Android SDK command-line tools)
+- **JDK 17**
+- **Bun** (for building the web assets)
+- A release keystore (see below)
+
+### Generating a release keystore (one-time)
+
+```bash
+keytool -genkey -v -keystore opencalc-release.keystore \
+  -alias opencalc \
+  -keyalg RSA -keysize 2048 -validity 10000 \
+  -storepass YOUR_PASSWORD \
+  -keypass YOUR_PASSWORD  # MUST match storepass for PKCS12 keystore
+```
+
+**Back this file up safely** — if you lose it, you cannot publish app updates.
+
+### Building locally
+
+```bash
+# 1. Build the web assets
+bun install
+bun run build
+
+# 2. Sync to the Android project
+npx cap sync android
+
+# 3. Build the APK
+cd android
+./gradlew assembleRelease \
+  -PRELEASE_STORE_FILE=/path/to/opencalc-release.keystore \
+  -PRELEASE_STORE_PASSWORD=YOUR_PASSWORD \
+  -PRELEASE_KEY_ALIAS=opencalc \
+  -PRELEASE_KEY_PASSWORD=YOUR_PASSWORD
+
+# 4. Find your APK at:
+#    android/app/build/outputs/apk/release/app-release.apk
+```
+
+### Building via GitHub Actions (recommended for releases)
+
+1. Add these repository secrets (Settings → Secrets and variables → Actions):
+   - `KEYSTORE_BASE64` — `base64 opencalc-release.keystore | tr -d '\n'`
+   - `KEYSTORE_PASSWORD` — your keystore password
+   - `KEY_ALIAS` — `opencalc`
+   - `KEY_PASSWORD` — same as `KEYSTORE_PASSWORD` (PKCS12 requires them to match)
+
+2. Push a tag:
+   ```bash
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+
+3. The workflow at `.github/workflows/build-apk.yml` will:
+   - Build the web assets
+   - Sync to Android
+   - Decode the keystore from the secret
+   - Build a signed release APK
+   - Generate a SHA256 checksum
+   - Attach both to a new GitHub Release
+
+---
+
 ## Project Structure
 
 ```

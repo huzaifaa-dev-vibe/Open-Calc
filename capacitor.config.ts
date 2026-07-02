@@ -13,7 +13,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
  * at build time.
  */
 const config: CapacitorConfig = {
-  appId: "com.huzaifaa.opencalc",
+  appId: "app.opencalc",
   appName: "OpenCalc",
   webDir: ".next/standalone",
   bundledWebRuntime: false,

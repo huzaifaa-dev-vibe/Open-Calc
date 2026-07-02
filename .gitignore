@@ -74,3 +74,14 @@ download/
 scripts/*.png
 tool-results/
 upload/
+
+# Capacitor / Android build artifacts (the android/ scaffolding IS tracked;
+# only the build outputs and local config are ignored)
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/app/capacitor.settings.gradle
+android/app/src/main/assets/public/
+*.keystore
+*.jks

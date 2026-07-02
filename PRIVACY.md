@@ -153,7 +153,7 @@ You are free to audit, modify, and redistribute the code under the terms of the 
 If you have questions about this privacy policy or about OpenCalc, please contact:
 
 - **GitHub Issues:** https://github.com/huzaifaa-dev-vibe/Open-Calc/issues
-- **Email:** [Contact email to be added]
+- **Email:** huzaaifaburhan@gmail.com
 
 ---
 

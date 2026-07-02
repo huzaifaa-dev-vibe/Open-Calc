@@ -1,0 +1,5 @@
+# OpenCalc Android — local.properties.example
+# Copy to local.properties and fill in your Android SDK path.
+# DO NOT commit local.properties — it's gitignored.
+
+sdk.dir=/path/to/Android/Sdk

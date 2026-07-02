@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Adaptive icon for Android 8.0+ (API 26+).
+  The background is a solid emerald green (matches OpenCalc's primary brand color),
+  and the foreground is the calculator icon (ic_launcher_foreground.png) which
+  is generated from the source PNG at every density bucket.
+
+  On launchers that mask icons (most modern Android launchers), this produces
+  a clean green rounded-square with the calculator symbol centered.
+
+  On older launchers / pre-API 26, the legacy ic_launcher.png is used instead.
+-->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+    <monochrome android:drawable="@mipmap/ic_launcher_foreground" />
+</adaptive-icon>

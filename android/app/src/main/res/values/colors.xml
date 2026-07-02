@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand colors — match the emerald/amber palette from globals.css -->
+    <color name="ic_launcher_background">#0F6E54</color>
+    <color name="color_primary">#0F6E54</color>
+    <color name="color_primary_dark">#0A4D3C</color>
+    <color name="color_accent">#F0B429</color>
+    <color name="splash_background">#0F6E54</color>
+    <color name="background">#F4F6F3</color>
+</resources>

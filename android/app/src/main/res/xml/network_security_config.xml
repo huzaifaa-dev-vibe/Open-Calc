@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Network security config — disallow cleartext HTTP, only allow HTTPS.
+     OpenCalc loads no external resources at runtime, so this is locked
+     down tight. If we add Supabase in v1.1, we'll add the Supabase
+     domain to the HTTPS-only allowlist here. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

@@ -1,0 +1,12 @@
+# Android build artifacts
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/captures/
+android/.idea/
+android/*.iml
+android/app/*.iml
+android/app/capacitor.settings.gradle
+android/app/src/main/assets/public/
+android/app/google-services.json

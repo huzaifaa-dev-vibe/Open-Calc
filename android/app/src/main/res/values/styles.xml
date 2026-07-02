@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base theme — used by MainActivity.
+         Uses NoActionBar so the WebView fills the whole screen. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:statusBarColor">@color/color_primary_dark</item>
+    </style>
+
+    <!-- Splash screen theme — solid brand color, no window content.
+         Used as the launch theme so the app starts with the brand color
+         instead of a white flash. -->
+    <style name="AppTheme.NoSplash" parent="AppTheme">
+        <item name="android:windowBackground">@color/splash_background</item>
+    </style>
+</resources>
