@@ -169,6 +169,23 @@
 }
 
 @layer utilities {
+  /* Caret blink animation — used by RawWithCaret in Display.tsx.
+     Steady 1.1s blink cycle, 0% and 100% fully visible, 50% invisible.
+     Respects prefers-reduced-motion. */
+  .opencalc-caret-blink {
+    animation: opencalc-caret-blink 1.1s steps(1, end) infinite;
+  }
+  @keyframes opencalc-caret-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .opencalc-caret-blink {
+      animation: none;
+      opacity: 0.7;
+    }
+  }
+
   .calc-key-shadow {
     box-shadow:
       0 1px 2px oklch(0 0 0 / 0.06),

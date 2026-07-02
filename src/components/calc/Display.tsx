@@ -51,23 +51,18 @@ export function Display() {
   return (
     <div className="relative flex flex-col justify-end gap-2 px-5 pt-4 pb-3 min-h-[32vh]">
       {/* D-pad — floating cluster in the top-right of the display.
-          Visible on all screen sizes when there's an expression to
-          navigate. Sits above the LaTeX preview without disturbing
-          the keypad. On mobile it's slightly smaller and tucked into
-          the corner. */}
-      <AnimatePresence>
-        {expression && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="absolute right-3 top-3 z-20 scale-90 sm:scale-100 origin-top-right"
-          >
-            <DPad />
-          </motion.div>
-        )}
-      </AnimatePresence>
+          Always visible (even when the expression is empty) so the
+          user always knows where to find it. Sits above the LaTeX
+          preview without disturbing the keypad. On mobile it's
+          slightly smaller and tucked into the corner. */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ type: "spring", stiffness: 380, damping: 28 }}
+        className="absolute right-3 top-3 z-20 scale-90 sm:scale-100 origin-top-right"
+      >
+        <DPad />
+      </motion.div>
 
       {/* top row: memory chip + angle unit + actions
           On mobile, the D-pad floats in the top-right corner, so we
@@ -153,12 +148,17 @@ export function Display() {
         )}
       </div>
 
-      {/* raw expression echo — shown when LaTeX rendered, for parity */}
-      {expression && liveLatexOk && (
-        <div className="text-xs font-mono text-muted-foreground/60 overflow-x-auto scrollbar-thin -mt-1">
-          {expression}
-        </div>
-      )}
+      {/* Raw expression echo with a blinking caret.
+          Always shown (even when LaTeX rendered) so the user can see
+          exactly what they typed AND where the caret is. The caret is
+          a thin blinking bar between characters at the caret position. */}
+      <div className="text-xs font-mono text-muted-foreground/60 overflow-x-auto scrollbar-thin -mt-1 min-h-[1rem]">
+        {expression ? (
+          <RawWithCaret text={expression} caretPos={caretPos} />
+        ) : (
+          <span className="text-muted-foreground/30">|</span>
+        )}
+      </div>
 
       {/* result */}
       <AnimatePresence mode="wait">
@@ -227,8 +227,12 @@ function ActionButton({
 
 /**
  * RawWithCaret — renders the raw expression string with a blinking
- * caret between characters at the caret position. Used only as a
- * fallback when KaTeX can't render the (still-incomplete) expression.
+ * caret between characters at the caret position. Used both as a
+ * fallback when KaTeX can't render the (still-incomplete) expression,
+ * AND as the always-visible raw echo below the LaTeX preview.
+ *
+ * The caret uses a CSS keyframe animation (`opencalc-caret-blink`)
+ * defined in globals.css so it stays visible and clearly blinking.
  */
 function RawWithCaret({ text, caretPos }: { text: string; caretPos: number }) {
   const pos = Math.max(0, Math.min(text.length, caretPos));
@@ -239,7 +243,7 @@ function RawWithCaret({ text, caretPos }: { text: string; caretPos: number }) {
       <span>{before}</span>
       <span
         aria-hidden
-        className="inline-block w-[2px] h-[1.1em] -mb-[0.15em] mx-[1px] bg-primary align-middle animate-pulse"
+        className="inline-block w-[2px] h-[1.1em] -mb-[0.15em] mx-[1px] bg-primary align-middle opencalc-caret-blink"
       />
       <span>{after}</span>
     </>
