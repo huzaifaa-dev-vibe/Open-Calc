@@ -1,3 +1,7 @@
 // OpenCalc Android — Gradle settings
 rootProject.name = "OpenCalc"
 include ":app"
+// Apply Capacitor's auto-generated settings (created by `npx cap sync android`).
+// This file lives at android/capacitor.settings.gradle and includes the
+// local node_modules paths for capacitor-android + any installed plugins.
+apply from: "capacitor.settings.gradle"

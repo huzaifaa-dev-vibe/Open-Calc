@@ -74,11 +74,11 @@ dependencies {
     // which is auto-generated. Do NOT hardcode them here.
 }
 
-// Apply Capacitor's auto-generated settings (created by `npx cap sync android`).
-// This file lives at android/app/capacitor.settings.gradle and includes the
-// local node_modules paths for capacitor-android + any installed plugins.
+// Apply Capacitor's auto-generated build config (created by `npx cap sync android`).
+// This file lives at android/app/capacitor.build.gradle and adds the
+// project dependencies on capacitor-android + any installed plugins.
 try {
-    apply from: "capacitor.settings.gradle"
+    apply from: "capacitor.build.gradle"
 } catch (Exception e) {
-    println "WARNING: capacitor.settings.gradle not found. Run 'npx cap sync android' first."
+    println "WARNING: capacitor.build.gradle not found. Run 'npx cap sync android' first."
 }
