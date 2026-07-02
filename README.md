@@ -11,7 +11,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org)
 [![PWA](https://img.shields.io/badge/PWA-installable-a855f7?style=for-the-badge&logo=pwa&logoColor=white)](public/manifest.webmanifest)
 
-[![First APK Release](https://img.shields.io/badge/APK_Release-July_1-ff6b35?style=for-the-badge&logo=android&logoColor=white)](#-installation--releases)
+[![First APK Release](https://img.shields.io/badge/APK_Release-July_2-ff6b35?style=for-the-badge&logo=android&logoColor=white)](#-installation--releases)
 [![Status: Active](https://img.shields.io/badge/Status-Active_Development-21c45a?style=for-the-badge)](#-roadmap)
 [![Stars](https://img.shields.io/github/stars/huzaifaa-dev-vibe/Open-Calc?style=for-the-badge&logo=github&color=ff6b35)](https://github.com/huzaifaa-dev-vibe/Open-Calc/stargazers)
 
@@ -35,6 +35,7 @@
 
 ## 📑 Table of Contents
 
+- [📣 Status update — launch moved to July 2](#-status-update--v100-launch-moved-to-july-2-2026)
 - [🌐 Live Preview](#-live-preview)
 - [✨ Features](#-features)
 - [🎨 Design Philosophy](#-design-philosophy)
@@ -48,6 +49,25 @@
 - [🗺️ Roadmap](#-roadmap)
 - [📄 License](#-license)
 - [🙏 Acknowledgements](#-acknowledgements)
+
+---
+
+## 📣 Status update — v1.0.0 launch moved to **July 2, 2026**
+
+> **Heads up!** We're pushing the v1.0.0 APK release back by **one day** — from July 1 to **July 2, 2026**.
+>
+> **Why the delay?** We want v1.0.0 to be genuinely stable, not rushed. There's a lot left to do:
+> - 🫥 Fix the History button overlap (top bar restructure)
+> - 🎯 Add a full directional D-pad (↑ ↓ ← →) to both keypads
+> - 📱 Finalise the Capacitor / TWA wrapper for the APK build
+> - ✍️ Sign the APK with a proper release keystore
+> - 🧪 Run through a final QA pass on real Android devices
+> - 📸 Capture screenshots for the release page
+> - 📋 Write proper release notes with installation instructions
+>
+> **What you can do today:** v0.0.9 (the testing build) is still available below — download it, run it locally, and [report bugs](https://github.com/huzaifaa-dev-vibe/Open-Calc/issues) so we can fix them before July 2.
+>
+> **Thank you for your patience.** The wait will be worth it. ❤️
 
 ---
 
@@ -70,7 +90,7 @@ The live preview runs the latest `main` branch on Netlify and is fully functiona
 > 1. The **History button is partially hidden under the mode toggle** (Normal / Sci / Convert) on small screens. As a workaround, tap the toggle area to the left of the History icon, or use `Ctrl+H` on desktop.
 > 2. There's **no directional navigation pad (D-pad) button** yet. You can't move the caret up/down/left/right from the keypad — only the `←` `→` arrow keys in Scientific mode. A full D-pad is coming in v1.0.0.
 
-The preview is great for trying OpenCalc before the July 1 APK release, or for contributors who want to see the current state of `main` without cloning the repo.
+The preview is great for trying OpenCalc before the July 2 APK release, or for contributors who want to see the current state of `main` without cloning the repo.
 
 ---
 
@@ -199,9 +219,9 @@ bun run lint
 
 ## 📦 Installation & Releases
 
-### 🎉 First APK Release — **July 1, 2026**
+### 🎉 First APK Release — **July 2, 2026**
 
-We're shipping the first installable Android APK on **1st July 2026**!
+We're shipping the first installable Android APK on **2nd July 2026**! (Originally planned for July 1 — see the [status update](#-status-update--v100-launch-moved-to-july-2-2026) above for the reason.)
 
 #### Where will the APK live?
 
@@ -217,7 +237,7 @@ The APK will be published in the **GitHub Releases panel** (not the Packages pan
 
 #### How users will install it
 
-1. On July 1, visit the [Releases page](https://github.com/huzaifaa-dev-vibe/Open-Calc/releases)
+1. On July 2, visit the [Releases page](https://github.com/huzaifaa-dev-vibe/Open-Calc/releases)
 2. Download `OpenCalc-v1.0.0.apk`
 3. On your Android device, enable **"Install from unknown sources"** in Settings
 4. Open the downloaded APK and tap **Install**
@@ -300,7 +320,7 @@ Look for issues labelled `good first issue` and `help wanted` in the [Issues tab
 
 ## ⚠️ Known issues in v0.0.9 (fixes coming in v1.0.0)
 
-We're being transparent about what's not quite right yet. The two issues below will be fixed in **v1.0.0** (July 1, 2026):
+We're being transparent about what's not quite right yet. The two issues below will be fixed in **v1.0.0** (July 2, 2026):
 
 ### 1. 🫥 History button hidden under the mode toggle
 
@@ -332,7 +352,7 @@ There is currently **no main navigation button to move the caret up / down / lef
 
 ## 🗺️ Roadmap
 
-### ✅ v1.0 — July 1, 2026 (first APK)
+### ✅ v1.0 — July 2, 2026 (first APK)
 
 - [x] Normal calculator with memory, undo/redo, history
 - [x] Scientific calculator with full trig, logs, roots, fractions, combinatorics
@@ -407,6 +427,6 @@ You're free to use, modify, distribute, and commercialise this software. Attribu
 
 **Built with ❤️ by [huzaifaa-dev-vibe](https://github.com/huzaifaa-dev-vibe) and contributors.**
 
-**MIT License · Open Source · First APK drops July 1, 2026 🎉**
+**MIT License · Open Source · First APK drops July 2, 2026 🎉**
 
 </div>

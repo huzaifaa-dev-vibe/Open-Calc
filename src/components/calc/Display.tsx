@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Share2, Copy, FunctionSquare } from "lucide-react";
 import { Latex } from "./Latex";
+import { DPad } from "./DPad";
 import { useCalc } from "@/store/calc";
 import { useHaptics } from "@/hooks/use-haptics";
 import { cn } from "@/lib/utils";
@@ -49,6 +50,23 @@ export function Display() {
 
   return (
     <div className="relative flex flex-col justify-end gap-2 px-5 pt-4 pb-3 min-h-[32vh]">
+      {/* D-pad — floating cluster in the top-right of the display.
+          Only shown when there's an expression to navigate. Sits
+          above the LaTeX preview without disturbing the keypad. */}
+      <AnimatePresence>
+        {expression && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ type: "spring", stiffness: 380, damping: 28 }}
+            className="absolute right-4 top-3 z-10 hidden sm:block"
+          >
+            <DPad />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* top row: memory chip + angle unit + actions */}
       <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
         <div className="flex items-center gap-2 min-h-[1.5rem]">

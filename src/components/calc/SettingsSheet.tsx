@@ -13,6 +13,8 @@ import {
   Heart,
   Smartphone,
   Hash,
+  History as HistoryIcon,
+  ChevronRight,
 } from "lucide-react";
 import { useCalc } from "@/store/calc";
 import { useHaptics } from "@/hooks/use-haptics";
@@ -24,9 +26,10 @@ import { toast } from "sonner";
 interface SettingsSheetProps {
   open: boolean;
   onClose: () => void;
+  onOpenHistory?: () => void;
 }
 
-export function SettingsSheet({ open, onClose }: SettingsSheetProps) {
+export function SettingsSheet({ open, onClose, onOpenHistory }: SettingsSheetProps) {
   const settings = useCalc((s) => s.settings);
   const setSettings = useCalc((s) => s.setSettings);
   const setOrientation = useCalc((s) => s.setOrientation);
@@ -34,6 +37,9 @@ export function SettingsSheet({ open, onClose }: SettingsSheetProps) {
   const setTheme = useCalc((s) => s.setTheme);
   const clearHistory = useCalc((s) => s.clearHistory);
   const historyCount = useCalc((s) => s.history.length);
+  const favoriteCount = useCalc(
+    (s) => s.history.filter((h) => h.favorite).length,
+  );
   const haptic = useHaptics();
 
   return (
@@ -80,6 +86,56 @@ export function SettingsSheet({ open, onClose }: SettingsSheetProps) {
             </div>
 
             <div className="flex-1 overflow-y-auto scrollbar-thin px-5 py-4 flex flex-col gap-5">
+              {/* History — quick access to the history panel */}
+              {onOpenHistory && (
+                <Section title="History">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      haptic("action");
+                      onClose();
+                      // Defer so the settings sheet close animation
+                      // doesn't conflict with the history open anim.
+                      setTimeout(() => onOpenHistory(), 80);
+                    }}
+                    className={cn(
+                      "w-full flex items-center justify-between gap-3 rounded-2xl",
+                      "bg-card ring-1 ring-border/50 px-3 py-2.5 text-left",
+                      "hover:bg-accent/5 transition-colors no-tap-highlight",
+                    )}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="relative flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary shrink-0">
+                        <HistoryIcon className="h-4 w-4" />
+                        {historyCount > 0 && (
+                          <span
+                            aria-hidden
+                            className="absolute -top-0.5 -right-0.5 min-w-[1rem] h-4 px-1 rounded-full bg-primary text-primary-foreground text-[0.6rem] font-semibold flex items-center justify-center ring-2 ring-background"
+                          >
+                            {historyCount > 99 ? "99+" : historyCount}
+                          </span>
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-sm font-medium truncate">
+                          Open history
+                        </div>
+                        <div className="text-xs text-muted-foreground truncate">
+                          {historyCount === 0
+                            ? "No calculations yet"
+                            : `${historyCount} calculation${historyCount === 1 ? "" : "s"}${
+                                favoriteCount > 0
+                                  ? ` · ${favoriteCount} favorite${favoriteCount === 1 ? "" : "s"}`
+                                  : ""
+                              }`}
+                        </div>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+                  </button>
+                </Section>
+              )}
+
               {/* Appearance */}
               <Section title="Appearance">
                 <Row

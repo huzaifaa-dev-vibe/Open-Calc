@@ -141,7 +141,11 @@ export default function Page() {
 
       <HistoryPanel open={historyOpen} onClose={() => setHistoryOpen(false)} />
       <SolverDrawer />
-      <SettingsSheet open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      <SettingsSheet
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        onOpenHistory={() => setHistoryOpen(true)}
+      />
     </>
   );
 }
