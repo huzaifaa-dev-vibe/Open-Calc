@@ -8,7 +8,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:8.5.0"
+        classpath "com.android.tools.build:gradle:8.7.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
@@ -18,12 +18,12 @@ apply plugin: "org.jetbrains.kotlin.android"
 
 android {
     namespace "app.opencalc"
-    compileSdkVersion 34
+    compileSdkVersion 36
 
     defaultConfig {
         applicationId "app.opencalc"
         minSdkVersion 24          // Android 7.0 — covers ~99% of active devices
-        targetSdkVersion 34       // Android 14
+        targetSdkVersion 36       // Android 16
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

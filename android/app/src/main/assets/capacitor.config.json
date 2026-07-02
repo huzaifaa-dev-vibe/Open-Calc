@@ -1,0 +1,28 @@
+{
+	"appId": "app.opencalc",
+	"appName": "OpenCalc",
+	"webDir": "out",
+	"bundledWebRuntime": false,
+	"android": {
+		"backgroundColor": "#131816",
+		"allowMixedContent": false,
+		"captureInput": true,
+		"webContentsDebuggingEnabled": false
+	},
+	"server": {
+		"androidScheme": "https",
+		"cleartext": false
+	},
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 800,
+			"backgroundColor": "#0f6e54",
+			"showSpinner": false,
+			"androidSplashResourceName": "splash",
+			"androidScaleType": "CENTER_CROP"
+		},
+		"Preferences": {
+			"group": "opencalc-v1"
+		}
+	}
+}
