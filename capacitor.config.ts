@@ -15,7 +15,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 const config: CapacitorConfig = {
   appId: "app.opencalc",
   appName: "OpenCalc",
-  webDir: ".next/standalone",
+  webDir: "out",
   bundledWebRuntime: false,
   android: {
     buildOptions: {
